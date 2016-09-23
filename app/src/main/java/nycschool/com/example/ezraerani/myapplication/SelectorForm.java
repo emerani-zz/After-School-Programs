@@ -1,6 +1,5 @@
 package nycschool.com.example.ezraerani.myapplication;
 
-import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,7 +20,7 @@ import butterknife.OnClick;
 /**
  * Created by ezraerani on 4/22/16.
  */
-public class SelectorForm extends DialogFragment {
+public class SelectorForm extends android.support.v4.app.DialogFragment {
 
     private static final String TAG = SelectorForm.class.getSimpleName();
 
@@ -59,8 +58,7 @@ public class SelectorForm extends DialogFragment {
 
         data = DataAccess.getInstance().getSelectedFilterSubset();
 
-        Log.d(TAG, "post-getArgs");
-
+        Log.d(TAG, "other" + data.get(0));
 
         adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_multiple_choice, data);
@@ -77,7 +75,6 @@ public class SelectorForm extends DialogFragment {
         for (int i = listView.getCount() - 1; i >= 0; i--) {
 
             if (checked.get(i) == false) {
-
                 data.remove(i);
             }
         }
@@ -85,8 +82,11 @@ public class SelectorForm extends DialogFragment {
         onFilterParametersSelectedListener = (OnFilterParametersSelectedListener) getActivity();
         onFilterParametersSelectedListener.addParametersToDataFilter(data, filterType);
 //                Log.d("PARAMETER_SUBMISSION", data.get(0).toString());
+        DataAccess.getInstance().setSelectedFilterSubset(null);
         dismiss();
     }
+
+
 
 
 

@@ -21,6 +21,8 @@ import java.util.Iterator;
  */
 public class DataAccess {
 
+    private static String TAG = DataAccess.class.getSimpleName();
+
     private static DataAccess instance = new DataAccess();
     private static final String BASE_URL = "https://data.cityofnewyork.us/resource/btx2-u66x.json";
 
@@ -58,7 +60,9 @@ public class DataAccess {
     }
 
     public void setSelectedFilterSubset(ArrayList<String> selectedFilterSubset) {
+        Log.d(TAG, "sfs " + selectedFilterSubset.get(0));
         this.selectedFilterSubset = selectedFilterSubset;
+        Log.d(TAG, "sfs " + this.selectedFilterSubset.get(0));
     }
 
     public AfterSchoolActivity getSelectedActivity() {
@@ -164,8 +168,10 @@ public class DataAccess {
 
     public void addToAgeGroup(AfterSchoolActivity activity) {
         if (!ageGroupHashMap.containsKey(activity.getAgeGroup())) {
-            ageGroupHashMap.put(activity.getAgeGroup(), new ArrayList<AfterSchoolActivity>());
-            ageGroupHashMap.get(activity.getAgeGroup()).add(activity);
+            if (activity.getAgeGroup() != null) {
+                ageGroupHashMap.put(activity.getAgeGroup(), new ArrayList<AfterSchoolActivity>());
+                ageGroupHashMap.get(activity.getAgeGroup()).add(activity);
+            }
         } else {
             ageGroupHashMap.get(activity.getAgeGroup()).add(activity);
         }
@@ -226,31 +232,20 @@ public class DataAccess {
 
     public ArrayList<String> getBoroughs() {
         ArrayList<String> boroughNames = new ArrayList<>();
-        Iterator iterator = boroughHashMap.keySet().iterator();
-        while (iterator.hasNext()) {
-            String key = (String) iterator.next();
-            boroughNames.add(key);
-        }
+        boroughNames.addAll(boroughHashMap.keySet());
         return boroughNames;
     }
 
     public ArrayList<String> getAgeGroups() {
         ArrayList<String> ageGroupNames = new ArrayList<>();
-        Iterator iterator = ageGroupHashMap.keySet().iterator();
-        while (iterator.hasNext()) {
-            String key = (String) iterator.next();
-            ageGroupNames.add(key);
-        }
+        ageGroupNames.addAll(ageGroupHashMap.keySet());
+
         return ageGroupNames;
     }
 
     public ArrayList<String> getPrograms() {
         ArrayList<String> programNames = new ArrayList<>();
-        Iterator iterator = programHashMap.keySet().iterator();
-        while (iterator.hasNext()) {
-            String key = (String) iterator.next();
-            programNames.add(key);
-        }
+        programNames.addAll(programHashMap.keySet());
         return programNames;
     }
 
