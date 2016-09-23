@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NYCAfterSchool</string>
+    <string name="title">After-School Programs</string>
+    <string name="filters">Choose Your Filters</string>
+    <string name="borough">Borough</string>
+    <string name="site">Site</string>
+    <string name="program">Program</string>
+    <string name="results">See My Results</string>
+    <string name="ageGroup">Age Group</string>
+</resources>
