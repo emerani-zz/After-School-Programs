@@ -27,38 +27,49 @@ public class DataAccess {
     HttpURLConnection con;
     BufferedReader reader;
 
-
     ArrayList<AfterSchoolActivity> masterActivityList;
     FilteredDataSet filteredDataSet;
     HashMap<String, ArrayList<AfterSchoolActivity>> boroughHashMap;
     HashMap<String, ArrayList<AfterSchoolActivity>> programHashMap;
     HashMap<String, ArrayList<AfterSchoolActivity>> ageGroupHashMap;
 
+    AfterSchoolActivity selectedActivity = null;
 
-
+    private ArrayList<String> selectedFilterSubset = null;
 
     private DataAccess() {
         boroughHashMap = new HashMap<>();
         programHashMap = new HashMap<>();
         ageGroupHashMap = new HashMap<>();
-        filteredDataSet = new FilteredDataSet();
+        filteredDataSet = FilteredDataSet.getInstance();
     }
-
 
     public static DataAccess getInstance() {
         return instance;
     }
 
 
-
-
     public ArrayList getFilteredDataSetList() {
         return filteredDataSet.getList();
     }
 
+    public ArrayList<String> getSelectedFilterSubset() {
+        return selectedFilterSubset;
+    }
+
+    public void setSelectedFilterSubset(ArrayList<String> selectedFilterSubset) {
+        this.selectedFilterSubset = selectedFilterSubset;
+    }
+
+    public AfterSchoolActivity getSelectedActivity() {
+        return selectedActivity;
+    }
+
+    public void setSelectedActivity(AfterSchoolActivity selectedActivity) {
+        this.selectedActivity = selectedActivity;
+    }
 
     public String getAPIData() {
-
 
         try {
 
@@ -80,7 +91,6 @@ public class DataAccess {
 
             return buffer.toString();
 
-
         } catch (Exception e) {
             Log.d("CATCH_HTTP_REQUEST", "CALLED");
             e.printStackTrace();
@@ -98,8 +108,6 @@ public class DataAccess {
         }
         return null;
     }
-
-
 
     public void distributeData(String rawJSONData) {
 
@@ -126,10 +134,6 @@ public class DataAccess {
                 addToBorough(newActivity);
                 addToAgeGroup(newActivity);
                 addToProgram(newActivity);
-//                filteredDataSet.addSingleToList(newActivity);
-
-
-
             }
 
 
@@ -250,8 +254,7 @@ public class DataAccess {
         return programNames;
     }
 
-    public ArrayList<AfterSchoolActivity> finalActivitiesList(HashMap<String, ArrayList<String>>
-                                                                      selectedFilterParameters) {
+    public void finalActivitiesList(HashMap<String, ArrayList<String>> selectedFilterParameters) {
 
 
         Iterator iterator = selectedFilterParameters.keySet().iterator();
@@ -271,6 +274,6 @@ public class DataAccess {
 //            }
         }
 
-        return filteredDataSet.getList();
+//        return filteredDataSet.getList();
     }
 }

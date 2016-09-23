@@ -1,10 +1,8 @@
 package nycschool.com.example.ezraerani.myapplication;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -13,7 +11,7 @@ import butterknife.ButterKnife;
 /**
  * Created by ezraerani on 4/22/16.
  */
-public class DetailsFragment extends Fragment {
+public class DetailsActivity extends AppCompatActivity {
 
 
     private AfterSchoolActivity activity;
@@ -25,21 +23,21 @@ public class DetailsFragment extends Fragment {
 
     // TODO: 9/23/16 implement map view where latlon != null
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
 
-        View detailView = inflater.inflate(R.layout.details_fragment, container, false);
-        ButterKnife.bind(this, detailView);
-        activity = getArguments().getParcelable("DATA");
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.details_fragment);
+        ButterKnife.bind(this);
+
+        activity = DataAccess.getInstance().getSelectedActivity();
 
         schoolText.setText(activity.getSiteName());
         activityText.setText(activity.getProgram());
         addressText.setText(activity.getSiteAddress());
         phoneText.setText(activity.getContactNumber());
 
-        return detailView;
-
 
     }
+
 }

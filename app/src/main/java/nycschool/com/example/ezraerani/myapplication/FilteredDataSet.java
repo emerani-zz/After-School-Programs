@@ -10,10 +10,16 @@ import java.util.ArrayList;
  */
 public class FilteredDataSet implements Parcelable {
 
+    private static FilteredDataSet instance = new FilteredDataSet();
+
     ArrayList<AfterSchoolActivity> list;
 
-    public FilteredDataSet() {
+    private FilteredDataSet() {
         list = new ArrayList<>();
+    }
+
+    public static FilteredDataSet getInstance() {
+        return instance;
     }
 
     public ArrayList<AfterSchoolActivity> getList() {

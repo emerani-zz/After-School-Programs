@@ -16,11 +16,14 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by ezraerani on 4/22/16.
  */
 public class SelectorForm extends DialogFragment {
+
+    private static final String TAG = SelectorForm.class.getSimpleName();
 
     public interface OnFilterParametersSelectedListener {
         void addParametersToDataFilter(ArrayList<String> chosenParameters, String category);
@@ -41,11 +44,7 @@ public class SelectorForm extends DialogFragment {
     }
 
     public static SelectorForm newInstance() {
-
-//        Bundle args = new Bundle();
-
         SelectorForm fragment = new SelectorForm();
-//        fragment.setArguments(args);
         return fragment;
     }
 
@@ -55,39 +54,38 @@ public class SelectorForm extends DialogFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.selector_form, null);
         ButterKnife.bind(this, view);
-        data = getArguments().getStringArrayList("DATA");
-        filterType = getArguments().getString("filterType");
+
+        Log.d(TAG, "pre-getArgs");
+
+        data = DataAccess.getInstance().getSelectedFilterSubset();
+
+        Log.d(TAG, "post-getArgs");
+
 
         adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_multiple_choice, data);
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        view.findViewById(R.id.submitSelectorForm).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                SparseBooleanArray checked = listView.getCheckedItemPositions();
-                for (int i = listView.getCount() - 1; i >= 0; i--) {
-
-                    if (checked.get(i) == false) {
-
-                        data.remove(i);
-                    }
-                }
-
-                onFilterParametersSelectedListener = (OnFilterParametersSelectedListener) getActivity();
-                onFilterParametersSelectedListener.addParametersToDataFilter(data, filterType);
-                Log.d("PARAMETER_SUBMISSION", data.get(0).toString());
-                dismiss();
-
-
-            }
-        });
-
-
         return view;
 
+    }
+
+    @OnClick(R.id.submitSelectorForm)
+    public void submitSelections(View view) {
+        SparseBooleanArray checked = listView.getCheckedItemPositions();
+        for (int i = listView.getCount() - 1; i >= 0; i--) {
+
+            if (checked.get(i) == false) {
+
+                data.remove(i);
+            }
+        }
+
+        onFilterParametersSelectedListener = (OnFilterParametersSelectedListener) getActivity();
+        onFilterParametersSelectedListener.addParametersToDataFilter(data, filterType);
+//                Log.d("PARAMETER_SUBMISSION", data.get(0).toString());
+        dismiss();
     }
 
 
